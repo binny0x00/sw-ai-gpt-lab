@@ -42,3 +42,7 @@ notion/
 .DS_Store
 *.swp
 *~
+
+# 로컬 파일
+local/
+tmp/
