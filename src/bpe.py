@@ -146,10 +146,43 @@ class BPETokenizer:
 
     def decode(self, ids: list[int], skip_special: bool = True) -> str:
         """
-        TODO: token ID 리스트를 문자열로 복원합니다.
+        token ID 리스트를 문자열로 복원합니다.
 
         주의:
         - merge token은 원본 byte token까지 재귀적으로 펼칩니다.
         - byte를 하나씩 decode하지 말고, 마지막에 `bytes(...).decode("utf-8")`를 한 번만 호출합니다.
         """
-        raise NotImplementedError("BPETokenizer.decode를 구현하세요.")
+
+        byte_values = []
+
+        for token_id in ids:
+            # 특수 토큰은 문자열 결과에서 제외
+            if skip_special and token_id in SPECIAL_IDS.values():
+                continue
+        
+            byte_token = self._token_id_to_bytes(token_id)
+            byte_values.extend(byte_token)
+
+        return bytes(byte_values).decode("utf-8")
+
+    # [헬퍼 함수] decode용 재귀함수: token ID를 최종 byte 값들로 변환 
+    def _token_id_to_bytes(self, token_id: int) -> list[int]:
+        token = self.id_to_token[token_id]
+
+        # token이 bytes 객체일 경우 그대로 반환
+        if isinstance(token, bytes):
+            return list(token)
+
+        # merge token: 머지가 계속 이어질 수 있으므로 재귀적으로 처리
+        if isinstance(token, tuple):
+            byte_values = []
+            for child_id in token:
+                byte_token = self._token_id_to_bytes(child_id)
+                byte_values.extend(byte_token)
+            return byte_values
+        
+        # 특수 토큰처리 (skip_special=False일 경우)
+        if isinstance(token, str) and token_id in SPECIAL_IDS.values():
+            return list(token.encode("utf-8"))
+
+        return []
