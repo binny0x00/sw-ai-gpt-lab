@@ -16,7 +16,8 @@ BOS_TOKEN = "<bos>"
 EOS_TOKEN = "<eos>"
 
 SPECIAL_TOKENS = [PAD_TOKEN, UNK_TOKEN, BOS_TOKEN, EOS_TOKEN]
-SPECIAL_IDS = {token: idx for idx, token in enumerate(SPECIAL_TOKENS)}
+SPECIAL_IDS = {token: idx for idx, token in enumerate(SPECIAL_TOKENS)} 
+# SPECIAL_IDS 는 { "<pad>": 0, "<unk>": 1, "<bos>": 2, "<eos>": 3, }를 의미함 - 특수 토큰 ID를 항상 고정하기 위해 사용하는 값
 BYTE_OFFSET = len(SPECIAL_TOKENS)
 NUM_BYTES = 256
 
@@ -39,11 +40,25 @@ class BPETokenizer:
 
     def _init_special_tokens(self):
         """
-        TODO:
         1. 특수 토큰 4개를 고정 ID 0~3에 등록합니다.
         2. byte 0~255를 ID 4~259에 bytes([byte_value]) 형태로 등록합니다.
         """
-        raise NotImplementedError("_init_special_tokens를 구현하세요.")
+
+        # 0. id_to_token, token_to_id를 비운다.
+        self.id_to_token = {}
+        self.token_to_id = {}
+
+        # 1. <pad>, <unk>, <bos>, <eos>를 ID 0~3으로 등록한다.
+        for token, idx in SPECIAL_IDS.items():
+            self.id_to_token[idx] = token
+            self.token_to_id[token] = idx
+
+        # 2. byte 0~255를 ID 4~259로 등록한다.
+        for byte_value in range(NUM_BYTES):
+            token_id = BYTE_OFFSET + byte_value
+            token = bytes([byte_value]) # bytes()는 Python에서 변경 불가능한 byte 시퀀스를 만드는 함수
+            self.id_to_token[token_id] = token
+            self.token_to_id[token] = token_id
 
     def get_pad_id(self):
         """padding 토큰 ID."""
