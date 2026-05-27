@@ -4,9 +4,9 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 반 | (예: AI 1반) |
-| 팀명 | (예: 3팀) |
-| 팀원 | (예: 홍길동, 김철수) |
+| 반 | 303호 |
+| 팀명 | 5팀 |
+| 팀원 | 최영빈, 조범상, 임재환, 윤형민 |
 
 ---
 
@@ -14,7 +14,7 @@
 
 | 단계 | 구현 내용 | 구현 파일 | 담당자 |
 | --- | --- | --- | --- |
-| 1 | UTF-8 byte-level BPE tokenizer | `src/bpe.py` |  |
+| 1 | UTF-8 byte-level BPE tokenizer | `src/bpe.py` | 전 인원 |
 | 2 | GPTDataset, create_dataloader, InputEmbedding | `src/dataset.py`, `src/embeddings.py` |  |
 | 3 | MultiHeadAttention, causal mask | `src/attention.py` |  |
 | 4 | LayerNorm, GELU, FeedForward, TransformerBlock, GPTModel, generate_text_simple | `src/model.py` |  |
@@ -27,7 +27,7 @@
 
 | 실행 명령 | 결과 | 비고 |
 | --- | --- | --- |
-| `pytest tests/test_bpe.py -v` | 통과 / 실패 / 미실행 |  |
+| `pytest tests/test_bpe.py -v` | 통과 | 6 passed |
 | `pytest tests/test_dataset.py -v` | 통과 / 실패 / 미실행 |  |
 | `pytest tests/test_attention.py -v` | 통과 / 실패 / 미실행 |  |
 | `pytest tests/test_model.py -v` | 통과 / 실패 / 미실행 |  |
