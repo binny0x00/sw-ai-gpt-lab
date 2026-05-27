@@ -77,6 +77,7 @@ class BPETokenizer:
         """
         # 초기화
         self._init_special_tokens()
+        self.merges = []
 
         # `corpus.encode("utf-8")`로 byte ID 시퀀스를 만듭니다.
         corpus_byte = corpus.encode("utf-8")
