@@ -44,5 +44,6 @@ notion/
 *~
 
 # 로컬 파일
+.vscode/
 local/
 tmp/
